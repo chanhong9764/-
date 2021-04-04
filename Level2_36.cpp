@@ -5,8 +5,6 @@
 
 using namespace std;
 
-typedef pair<int,int> ii;
-
 vector<int> solution(string s) {
     vector<int> answer;
     unordered_map<int,int> m;
