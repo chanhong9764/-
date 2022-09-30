@@ -15,8 +15,8 @@ def solution(survey, choices):
         if choices[i] >= 5:
             dict[survey[i][1]] += choices[i] - 4
         elif choices[i] < 4:
-            dict[survey[i][0]] += -(choices[i] - 4)
-    print(dict)
+            dict[survey[i][0]] += 4 - choices[i]
+    
     if dict["R"] >= dict["T"]:
         answer += "R"
     else:

@@ -12,4 +12,4 @@ def solution(people, limit):
         
         answer += 1
         
-    return answerd
+    return answer
