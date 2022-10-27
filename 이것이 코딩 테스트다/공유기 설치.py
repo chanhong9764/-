@@ -1,6 +1,3 @@
-from array import array
-
-
 n, c = map(int, input().split())
 
 data = []
