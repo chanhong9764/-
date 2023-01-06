@@ -1,0 +1,7 @@
+SELECT a.AUTHOR_ID, a.AUTHOR_NAME, b.CATEGORY, sum(s.SALES*price) as TOTAL_SALES
+from BOOK as b
+JOIN AUTHOR as a on b.AUTHOR_ID = a.AUTHOR_ID
+JOIN BOOK_SALES as s on s.BOOK_ID = b.BOOK_ID
+where YEAR(s.SALES_DATE) = 2022 and MONTH(s.SALES_DATE) = 1
+group by a.AUTHOR_ID, b.CATEGORY
+order by a.AUTHOR_ID, b.CATEGORY desc

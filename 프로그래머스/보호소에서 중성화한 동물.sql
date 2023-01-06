@@ -1,0 +1,1 @@
+SELECT ins.ANIMAL_ID, ins.ANIMAL_TYPE, ins.NAME from ANIMAL_INS as ins JOIN ANIMAL_OUTS as outs USING (ANIMAL_ID) where ANIMAL_ID IN (SELECT ANIMAL_ID from ANIMAL_INS where SEX_UPON_INTAKE like 'Intact%') and SEX_UPON_OUTCOME not like 'Intact%' order by ANIMAL_ID
