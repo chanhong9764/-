@@ -1,0 +1,1 @@
+SELECT count(*) as USERS from USER_INFO where AGE BETWEEN 20 and 29 and JOINED BETWEEN '2021-01-01' and '2021-12-31'

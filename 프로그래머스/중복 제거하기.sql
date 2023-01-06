@@ -1,0 +1,1 @@
+SELECT count(b.name) from (SELECT NAME from ANIMAL_INS group by NAME) as b
