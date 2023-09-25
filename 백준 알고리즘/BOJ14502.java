@@ -1,120 +1,110 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
-	static int N, M, map[][];
-	static ArrayList<Point> ZERO, Virus;
-	static int ans = 0;
-	static class Point {
-		int r, c;
+public class BOJ14502 {
+	static class Pos {
+		int x, y;
+		public Pos(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	static int N, M;
+	static int[][] map;
+	static int Ans;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static ArrayList<Pos> virus = new ArrayList<>();
+	static ArrayList<Pos> blank = new ArrayList<>();
+	static boolean[] visited;
+	
+	static void bfs(int[][] tmap) {
+		ArrayDeque<Pos> p = new ArrayDeque<>();
 		
-		Point(int r, int c) {
-			this.r = r;
-			this.c = c;
+		for(Pos t : virus) {
+			p.add(new Pos(t.x, t.y));
+		}
+		
+		while(!p.isEmpty()) {
+			Pos vt = p.poll();
+			
+			for(int i = 0; i < 4; i++) {
+				int nx = vt.x + dx[i];
+				int ny = vt.y + dy[i];
+				
+				if(nx >= N || nx < 0 || ny >= M || ny < 0 || tmap[nx][ny] != 0) {
+					continue;
+				}
+				tmap[nx][ny] = 2;
+				p.add(new Pos(nx, ny));
+			}
+		}
+	}
+	
+	static void combination(int idx, int cnt) {
+		if(cnt == 3) {
+			int[][] temp = new int[N][M];
+			
+			for(int i = 0; i < N; i++) { 
+				for(int j = 0; j < M; j++) {
+					temp[i][j] = map[i][j];
+				}
+			}
+			for(int i = 0; i < visited.length; i++) {
+				if(visited[i]) {
+					temp[blank.get(i).x][blank.get(i).y] = 1;
+				}
+			}
+			bfs(temp);
+			
+			int count = 0;
+			for(int i = 0; i < N; i++) {
+				for(int j = 0; j < M; j++) {
+					if(temp[i][j] == 0) {
+						count++;
+					}
+				}
+			}
+			Ans = Math.max(Ans, count);
+			return;
+		}
+		
+		for(int i = idx; i < blank.size(); i++) {
+			if(!visited[i]) {
+				visited[i] = true;
+				combination(i + 1, cnt + 1);
+				visited[i] = false;
+			}
 		}
 	}
 	
 	public static void main(String[] args) throws IOException {
-		//System.setIn(new FileInputStream("test1"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
+		
 		map = new int[N][M];
-		ZERO = new ArrayList<Point>();
-		Virus = new ArrayList<Main.Point>();
-		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < M; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				if (map[i][j] == 0) ZERO.add(new Point(i, j));
-				if (map[i][j] == 2) Virus.add(new Point(i, j));
-				
-			}
-		}
-		
-		zeroLength = ZERO.size();	
-		used = new int[zeroLength];
-		history = new int[3];
-		combi(0, 0);
-		System.out.println(ans);
-	}
-	static int zeroLength;
-	static int[] used;
-	static int[] history;
-	static int[] dr = {-1, 1, 0, 0};
-	static int[] dc = {0, 0, -1, 1};
-	
-	static void check() {
-		int count = 0;
-		ArrayDeque<Point> p = new ArrayDeque<Main.Point>();
-		boolean[][] v = new boolean[N][M];
-		for(int i = 0; i < Virus.size(); i++) {
-			p.add(Virus.get(i));
-			v[Virus.get(i).r][Virus.get(i).c] = true;
-		}
-	
-		while(!p.isEmpty()) {
-			Point t = p.pop();
-			
-			for(int i = 0; i < 4; i++) {
-				int tr = t.r + dr[i];
-				int tc = t.c + dc[i];
-						
-				if(tr >= N || tr < 0 || tc >= M || tc < 0 || v[tr][tc] || map[tr][tc] == 1 || map[tr][tc] == 2) {
-					continue;
-				}
-				v[tr][tc] = true;
-				p.add(new Point(tr, tc));
-				count += 1;
-			}
-		}
-		int c = 0;
+
 		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < M; j++) {
-				if(v[i][j] == false && map[i][j] != 1) {
-					c++;
+				int input = Integer.parseInt(st.nextToken());
+				if(input == 2) {
+					virus.add(new Pos(i, j));
+				} else if(input == 0) {
+					blank.add(new Pos(i, j));
 				}
+				map[i][j] = input;
 			}
 		}
-		ans = Math.max(ans, c);
-	}
-	
-	static void combi(int depth, int k) {
-		if(depth == 3) {
-			Point[] p = new Point[3];
-			
-			for(int i = 0; i < 3; i++) { 
-				p[i] = ZERO.get(history[i]);
-			}
-			for(int i = 0; i < 3; i++) {
-				map[p[i].r][p[i].c] = 1;
-			}
-			check();
-			for(int i = 0; i < 3; i++) {
-				map[p[i].r][p[i].c] = 0;
-			}
-			return;
-		}
-		
-		for(int i = k; i < zeroLength; i++) {
-			if(used[i] == 1) {
-				continue;
-			}
-			used[i] = 1;
-			history[depth] = i;
-			combi(depth + 1, i + 1);
-			used[i] = 0;
-		}
+		visited = new boolean[blank.size()];
+		combination(0, 0);
+		System.out.println(Ans);
 	}
 }
