@@ -5,5 +5,5 @@ JOIN ANIMAL_OUTS as B
 ON A.ANIMAL_ID = B.ANIMAL_ID
 WHERE 1
 and A.SEX_UPON_INTAKE like 'Intact%'
-and (B.SEX_UPON_OUTCOME like 'Spayed%' or B.SEX_UPON_OUTCOME like 'Neutered%')
+and B.SEX_UPON_OUTCOME not like 'Intact%'
 order by A.ANIMAL_ID
