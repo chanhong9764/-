@@ -1,0 +1,9 @@
+-- 코드를 입력하세요
+SELECT A.ANIMAL_ID, A.ANIMAL_TYPE, A.NAME
+FROM ANIMAL_INS as A
+JOIN ANIMAL_OUTS as B
+ON A.ANIMAL_ID = B.ANIMAL_ID
+WHERE 1
+and A.SEX_UPON_INTAKE like 'Intact%'
+and (B.SEX_UPON_OUTCOME like 'Spayed%' or B.SEX_UPON_OUTCOME like 'Neutered%')
+order by A.ANIMAL_ID
