@@ -2,78 +2,70 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
-	static class Pos {
-		int x;
-		int y;
+    static class Pos {
+        int x, y;
+        public Pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    static int N, M;
+    static int[][] tomato;
+    static ArrayDeque<Pos> good_tomato = new ArrayDeque<>();
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+    static int answer = -1;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        tomato = new int[N][M];
 
-		public Pos(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+        for(int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < M; j++) {
+                int temp = Integer.parseInt(st.nextToken());
+                if(temp == 1) {
+                    good_tomato.add(new Pos(i, j));
+                }
+                tomato[i][j] = temp;
+            }
+        }
+        bfs();
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                if(tomato[i][j] == 0) {
+                    answer = -1;
+                    break;
+                }
+            }
+            if(answer == -1) break;
+        }
+        System.out.println(answer);
+    }
+    public static void bfs() {
+        while(!good_tomato.isEmpty()) {
+            int size = good_tomato.size();
+            for(int i = 0; i < size; i++) {
+                Pos t = good_tomato.poll();
 
-	static int M, N;
-	static int[][] box;
-	static int[] dx = {0, 0, 1, -1};
-	static int[] dy = {-1, 1, 0, 0};
-	static ArrayDeque<Pos> q;
-	static int ans;
+                for (int j = 0; j < 4; j++) {
+                    int nx = t.x + dx[j];
+                    int ny = t.y + dy[j];
 
-	static void bfs() {
-		while (!q.isEmpty()) {
-			int qSize = q.size();
-			for (int l = 0; l < qSize; l++) {
-				Pos p = q.poll();
-
-				for (int i = 0; i < 4; i++) {
-					int nx = p.x + dx[i];
-					int ny = p.y + dy[i];
-					
-					if (nx >= N || nx < 0 || ny >= M || ny < 0 || box[nx][ny] == -1 || box[nx][ny] == 1) {
-						continue;
-					}
-					box[nx][ny] = 1;
-					q.add(new Pos(nx, ny));
-				}
-			}
-			ans++;
-		}
-	}
-
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-
-		M = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-
-		box = new int[N][M];
-		q = new ArrayDeque<Pos>();
-
-		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < M; j++) {
-				int input = Integer.parseInt(st.nextToken());
-				if(input != 0) {
-					box[i][j] = input;
-				}
-				if(input == 1) {
-					q.add(new Pos(i, j));
-				}
-			}
-		}
-		bfs();
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(box[i][j] == 0) {
-					System.out.println(-1);
-					return;
-				}
-			}
-		}
-		System.out.println(ans - 1);
-	}
+                    if (nx >= N || nx < 0 || ny >= M || ny < 0 || tomato[nx][ny] == 1 || tomato[nx][ny] == -1) {
+                        continue;
+                    }
+                    tomato[nx][ny] = 1;
+                    good_tomato.add(new Pos(nx, ny));
+                }
+            }
+            answer++;
+        }
+    }
 }
