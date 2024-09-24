@@ -1,15 +1,15 @@
 -- 코드를 작성해주세요
 SELECT E.EMP_NO, E.EMP_NAME, 
     CASE
-        WHEN SUM(SCORE) / 2 >= 96 THEN 'S'
-        WHEN SUM(SCORE) / 2 >= 90 THEN 'A'
-        WHEN SUM(SCORE) / 2 >= 80 THEN 'B'
+        WHEN AVG(SCORE) >= 96 THEN 'S'
+        WHEN AVG(SCORE) >= 90 THEN 'A'
+        WHEN AVG(SCORE) >= 80 THEN 'B'
         ELSE 'C'
     END AS GRADE,
     CASE
-        WHEN SUM(SCORE) / 2 >= 96 THEN E.SAL * 0.2
-        WHEN SUM(SCORE) / 2 >= 90 THEN E.SAL * 0.15
-        WHEN SUM(SCORE) / 2 >= 80 THEN E.SAL * 0.1
+        WHEN AVG(SCORE) >= 96 THEN E.SAL * 0.2
+        WHEN AVG(SCORE) >= 90 THEN E.SAL * 0.15
+        WHEN AVG(SCORE) >= 80 THEN E.SAL * 0.1
         ELSE 0
     END AS BONUS
 FROM HR_EMPLOYEES AS E
