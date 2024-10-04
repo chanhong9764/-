@@ -17,7 +17,7 @@ class Solution {
             for(int j = 0; j < t.length; j++) {
                 mod += t[j] % (i + 1);
             }
-            answer = answer^mod;
+            answer ^= mod;
         }
     
         return answer;
