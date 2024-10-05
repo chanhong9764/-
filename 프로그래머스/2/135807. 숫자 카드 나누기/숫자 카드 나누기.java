@@ -3,7 +3,7 @@ class Solution {
         int answer = 0;
         int tempA = arrayA[0];
         for(int i = 1; i < arrayA.length; i++) {
-            tempA = gcd(Math.max(tempA, arrayA[i]), Math.min(tempA, arrayA[i]));
+            tempA = gcd(tempA, arrayA[i]);
         }
         boolean isValidA = true;
         for(int i = 0; i < arrayB.length; i++) {
@@ -14,7 +14,7 @@ class Solution {
         }
         int tempB = arrayB[0];
         for(int i = 1; i < arrayB.length; i++) {
-            tempB = gcd(Math.max(tempB, arrayB[i]), Math.min(tempB, arrayB[i]));
+            tempB = gcd(tempB, arrayB[i]);
         }
         boolean isValidB = true;
         for(int i = 0; i < arrayA.length; i++) {
@@ -23,7 +23,7 @@ class Solution {
                 break;
             }
         }
-        // System.out.println(tempA + " " + tempB + " " + isValidA + " " + isValidB);
+        
         if(isValidA && isValidB) {
             answer = Math.max(tempA, tempB);
         } else if(isValidA) {
