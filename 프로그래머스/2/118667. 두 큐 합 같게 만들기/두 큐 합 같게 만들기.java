@@ -17,7 +17,7 @@ class Solution {
         }
         
         while(tq1 != tq2) {
-            if(answer == queue1.length * 3 - 3) {
+            if(answer == queue1.length * 3) {
                 answer = -1;
                 break;
             }
