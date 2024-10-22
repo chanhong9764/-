@@ -19,13 +19,14 @@ class Solution {
     public int solution(int alp, int cop, int[][] problems) {
         int answer = 0;
 
+        list.add(new int[] {0, 0, 1, 0, 1});
+        list.add(new int[] {0, 0, 0, 1, 1});
+        
         for(int i = 0; i < problems.length; i++) {
             al = Math.max(al, problems[i][0]);
             co = Math.max(co, problems[i][1]);
             list.add(new int[] {problems[i][0], problems[i][1], problems[i][2], problems[i][3], problems[i][4]});
         }
-        list.add(new int[] {0, 0, 1, 0, 1});
-        list.add(new int[] {0, 0, 0, 1, 1});
         
         for(int i = 0; i < 151; i++) {
             for(int j = 0; j < 151; j++) {
@@ -34,7 +35,9 @@ class Solution {
         }
 
         time = Integer.MAX_VALUE;
+        
         bfs(alp, cop);
+        
         answer = time;
         return answer;
     }
@@ -49,10 +52,10 @@ class Solution {
         while(!pq.isEmpty()) {
             Node t = pq.poll();
             
-            t.al = Math.min(t.al, 150);
-            t.co = Math.min(t.co, 150);
+            t.al = Math.min(t.al, al);
+            t.co = Math.min(t.co, co);
             
-            if(al <= t.al && co <= t.co) {
+            if(al == t.al && co == t.co) {
                 time = Math.min(time, t.t);
                 continue;
             }
