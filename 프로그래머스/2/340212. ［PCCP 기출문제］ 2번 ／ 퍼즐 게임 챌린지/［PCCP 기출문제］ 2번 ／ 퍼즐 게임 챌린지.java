@@ -3,8 +3,12 @@ import java.util.*;
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
         long start = 1;
-        long end = limit;
+        long end = 0;
         
+        for(int i = 0; i < diffs.length; i++) {
+            end = Math.max(end, diffs[i]);
+        }
+      
         // diff의 크기가 300,000이므로 NlogN 이하의 시간복잡도를 가지는 이분탐색 사용
         while(start <= end) {
             long mid = (start + end) / 2;
